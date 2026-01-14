@@ -1,0 +1,102 @@
+-- 1. EXTENSIONS & ENUMS
+-- Enable UUID extension if not already active
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Create Order Status Enum
+CREATE TYPE order_status AS ENUM ('pending', 'paid', 'shipped', 'cancelled');
+
+-- 2. TABLES
+-- Categories Table
+CREATE TABLE categories (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  slug TEXT NOT NULL UNIQUE
+);
+
+-- Profiles Table (Links to Supabase Auth.users)
+CREATE TABLE profiles (
+  id uuid REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  full_name TEXT,
+  avatar_url TEXT,
+  role TEXT DEFAULT 'customer' CHECK (role IN ('customer', 'admin'))
+);
+
+-- Desserts Table
+CREATE TABLE desserts (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  summary TEXT,
+  description TEXT,
+  price_cents INTEGER NOT NULL, -- Stored in cents (e.g., 650 for $6.50)
+  thumbnail_url TEXT,
+  images TEXT[] DEFAULT '{}',
+  category_id uuid REFERENCES categories(id) ON DELETE SET NULL,
+  stock_count INTEGER DEFAULT 10,
+  nutritional_info JSONB DEFAULT '{}'::jsonb, -- Target for n8n AI automation
+  is_featured BOOLEAN DEFAULT false
+);
+
+-- Orders Table
+CREATE TABLE orders (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  user_id uuid REFERENCES profiles(id) ON DELETE SET NULL,
+  total_amount_cents INTEGER NOT NULL,
+  status order_status DEFAULT 'pending',
+  customer_email TEXT NOT NULL,
+  shipping_address JSONB, -- Flexible for address data
+  n8n_processed BOOLEAN DEFAULT false -- Flag for n8n to track automation status
+);
+
+-- Order Items (Join Table for Orders and Desserts)
+CREATE TABLE order_items (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_id uuid REFERENCES orders(id) ON DELETE CASCADE,
+  dessert_id uuid REFERENCES desserts(id) ON DELETE SET NULL,
+  quantity INTEGER NOT NULL DEFAULT 1,
+  unit_price_cents INTEGER NOT NULL -- Captures price at moment of purchase
+);
+
+-- Favorites (Join Table for Many-to-Many relationship)
+CREATE TABLE favorites (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  dessert_id uuid REFERENCES desserts(id) ON DELETE CASCADE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  UNIQUE(user_id, dessert_id)
+);
+
+-- 3. AUTOMATION (DATABASE TRIGGERS)
+-- Function to handle profile creation on Auth Signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO public.profiles (id, full_name, avatar_url)
+  VALUES (
+    new.id, 
+    new.raw_user_meta_data->>'full_name', 
+    new.raw_user_meta_data->>'avatar_url'
+  );
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger the function
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+
+-- 4. SECURITY (ROW LEVEL SECURITY - RLS)
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE desserts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
+
+-- Policies
+CREATE POLICY "Public profiles are viewable by everyone." ON profiles FOR SELECT USING (true);
+CREATE POLICY "Users can update own profile." ON profiles FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "Desserts are viewable by everyone." ON desserts FOR SELECT USING (true);
+CREATE POLICY "Users can view their own orders." ON orders FOR SELECT USING (auth.uid() = user_id);

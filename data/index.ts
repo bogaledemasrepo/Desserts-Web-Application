@@ -1,13 +1,12 @@
+import { summary } from "framer-motion/client";
+
 const data =  [
   {
     id:"1",
-    image: {
-      thumbnail: "/assets/images/image-waffle-thumbnail.jpg",
-      mobile: "/assets/images/image-waffle-mobile.jpg",
-      tablet: "/assets/images/image-waffle-tablet.jpg",
-      desktop: "/assets/images/image-waffle-desktop.jpg",
-    },
+    thumbnail: "/assets/images/image-waffle-thumbnail.jpg",
+    images:["/assets/images/image-waffle-mobile.jpg",],
     name: "Waffle with Berries",
+    summary: "Delicious waffle topped with fresh berries and syrup",
     description:"Delicious waffle topped with fresh berries and syrup",
     category: "Waffle",
     price: 6.5,
