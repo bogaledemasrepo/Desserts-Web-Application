@@ -1,6 +1,5 @@
 "use client";
 import IncrementSvg from "@/public/assets/images/icon-increment-quantity.svg";
-import React from "react";
 
 const MaxiButton = ({ clickHandler }: { clickHandler: () => void }) => {
   return (

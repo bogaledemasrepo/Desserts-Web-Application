@@ -1,5 +1,6 @@
-import { Hero } from "@/sections/hero";
-import { ProductGrid } from "@/sections/product-grid";
+import data from "@/data";
+import { Hero } from "@/components/sections/hero";
+import { ProductGrid } from "@/components/sections/product-grid";
 import { Suspense } from "react";
 
 function ProductGridSkeleton() {
@@ -31,21 +32,9 @@ export default function Home() {
 		<main>
 			<Hero />
 			<Suspense fallback={<ProductGridSkeleton />}>
-				<ProductGrid title="Featured Products" limit={6} />
+				<ProductGrid products={data} title="Featured Products" limit={6} />
 			</Suspense>
 		</main>
 	);
 }
 
-// import Item from "@/components/Item";
-// import data from "@/data";
-
-// export default function Home() {
-//   return (
-//     <div className="flex flex-col min-[670px]:flex-row gap-16">
-//       <div className="flex-1 grow grid w-full grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 overflow-y-scroll">
-
-//       </div>
-//     </div>
-//   );
-// }

@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { removeFromCart, setCartQuantity } from "@/actions/actions";
 import { CartLineItem, useCart } from "@/hooks/cart-context";
-// import { CURRENCY, LOCALE } from "@/lib/constants";
-// import { formatMoney } from "@/lib/money";
+import { CURRENCY, LOCALE } from "@/lib/constants";
+import { formatMoney } from "@/lib/money";
 
 type CartItemProps = {
 	item: CartLineItem;
@@ -28,7 +28,7 @@ export function CartItem({ item }: CartItemProps) {
 
 	const handleRemove = () => {
 		startTransition(async () => {
-			dispatch({ type: "REMOVE", variantId: productVariant.id });
+			dispatch({ type: "REMOVE", id: productVariant.id });
 			await removeFromCart(productVariant.id);
 			router.refresh();
 		});
@@ -36,7 +36,7 @@ export function CartItem({ item }: CartItemProps) {
 
 	const handleIncrement = () => {
 		startTransition(async () => {
-			dispatch({ type: "INCREASE", variantId: productVariant.id });
+			dispatch({ type: "INCREASE", id: productVariant.id });
 			await setCartQuantity(productVariant.id, quantity + 1);
 			router.refresh();
 		});
@@ -48,7 +48,7 @@ export function CartItem({ item }: CartItemProps) {
 			return;
 		}
 		startTransition(async () => {
-			dispatch({ type: "DECREASE", variantId: productVariant.id });
+			dispatch({ type: "DECREASE", id: productVariant.id });
 			await setCartQuantity(productVariant.id, quantity - 1);
 			router.refresh();
 		});
@@ -78,7 +78,7 @@ export function CartItem({ item }: CartItemProps) {
 					<button
 						type="button"
 						onClick={handleRemove}
-						className="flex-shrink-0 p-1 text-muted-foreground hover:text-destructive transition-colors"
+						className="shrink-0 p-1 text-muted-foreground hover:text-destructive transition-colors"
 					>
 						<Trash2 className="h-4 w-4" />
 					</button>

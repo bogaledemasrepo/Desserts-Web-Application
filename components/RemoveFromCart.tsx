@@ -1,13 +1,12 @@
 "use client";
-import { ApiContext } from "@/hooks/apiContext";
+import { useCart } from "@/hooks/cart-context";
 import RemoveSvg from "@/public/assets/images/icon-remove-item.svg";
-import { useContext } from "react";
-const RemoveFromCart = ({ name }: { name: string }) => {
-  const { removeItem } = useContext(ApiContext);
+const RemoveFromCart = ({ id }: { id: string }) => {
+  const { dispatch } = useCart();
   return (
     <button
       className="p-1 rounded-full border-2 border-slate-400 flex items-center justify-center hover:border-slate-600 text-slate-600 cursor-pointer transition-colors"
-      onClick={() => removeItem(name)}
+      onClick={() => dispatch({ type: "REMOVE", id: id })}
     >
       <RemoveSvg />
     </button>

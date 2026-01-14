@@ -34,7 +34,7 @@ export function Footer() {
 					{/* Brand */}
 					<div className="sm:max-w-xs">
 						<Link href="/" className="text-xl font-bold text-foreground">
-							Simple E-commerce
+							Smart Dessert
 						</Link>
 						<p className="mt-4 text-sm text-muted-foreground leading-relaxed">
 							Curated essentials for modern living. Quality products, thoughtfully designed.
@@ -48,7 +48,7 @@ export function Footer() {
 				{/* Bottom bar */}
 				<div className="py-6 border-t border-border">
 					<p className="text-sm text-muted-foreground">
-						&copy; {new Date().getFullYear()} Your Next Store. All rights reserved.
+						&copy; {new Date().getFullYear()} Smart Dessert. All rights reserved.
 					</p>
 				</div>
 			</div>

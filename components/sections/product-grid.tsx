@@ -1,15 +1,21 @@
 // import type { APICollectionGetByIdResult, APIProductsBrowseResult } from "commerce-kit";
+import data from "@/data";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export type Product = {
-    id: number;
-    primaryImage: null;
-    secondaryImage: null;
+	id: string;
+    image: {
+        thumbnail: string;
+        mobile: string;
+        tablet: string;
+        desktop: string;
+    };
     name: string;
+	description: string;
+    category: string;
     price: number;
-    slug: string;
 };
 
 type ProductGridProps = {
@@ -20,7 +26,6 @@ type ProductGridProps = {
 	showViewAll?: boolean;
 	viewAllHref?: string;
 };
-
 export async function ProductGrid({
 	title = "Featured Products",
 	description = "Handpicked favorites from our collection",
@@ -82,20 +87,20 @@ export async function ProductGrid({
 						// const secondaryImage = allImages[1];
 
 					return (
-						<Link key={product.id} href={`/product/${product.slug}`} className="group border border-gray-300 rounded-xl p-4">
+						<Link key={product.id} href={`/product/${product.id}`} className="group border border-gray-300 rounded-xl p-4">
 							<div className="relative aspect-square bg-secondary rounded-2xl overflow-hidden mb-4">
-								{product.primaryImage && (
+								{product.image && (
 									<Image
-										src={product.primaryImage}
+										src={product.image.thumbnail}
 										alt={product.name}
 										fill
 										sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
 										className="object-cover transition-opacity duration-500 group-hover:opacity-0"
 									/>
 								)}
-								{product.secondaryImage && (
+								{product.image && (
 									<Image
-										src={product.secondaryImage}
+										src={product.image.thumbnail}
 										alt={`${product.name} - alternate view`}
 										fill
 										sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -105,7 +110,7 @@ export async function ProductGrid({
 							</div>
 							<div className="space-y-1">
 								<h3 className="text-base font-medium text-foreground">{product.name}</h3>
-								<p className="text-base font-semibold text-foreground">$ {product.price}</p>
+								<p className="text-base font-semibold text-foreground">$ {product.price.toFixed(2)}</p>
 							</div>
 						</Link>
 					);

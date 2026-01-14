@@ -24,9 +24,9 @@ export type Cart = {
 };
 
 type CartAction =
-	| { type: "INCREASE"; variantId: string }
-	| { type: "DECREASE"; variantId: string }
-	| { type: "REMOVE"; variantId: string }
+	| { type: "INCREASE"; id: string }
+	| { type: "DECREASE"; id: string }
+	| { type: "REMOVE"; id: string }
 	| { type: "ADD_ITEM"; item: CartLineItem };
 
 type CartContextValue = {
@@ -69,7 +69,7 @@ export function CartProvider({ children, initialCart, initialCartId }: CartProvi
 				return {
 					...state,
 					lineItems: state.lineItems.map((item) =>
-						item.productVariant.id === action.variantId ? { ...item, quantity: item.quantity + 1 } : item,
+						item.productVariant.id === action.id ? { ...item, quantity: item.quantity + 1 } : item,
 					),
 				};
 
@@ -78,7 +78,7 @@ export function CartProvider({ children, initialCart, initialCartId }: CartProvi
 					...state,
 					lineItems: state.lineItems
 						.map((item) => {
-							if (item.productVariant.id === action.variantId) {
+							if (item.productVariant.id === action.id) {
 								if (item.quantity - 1 <= 0) {
 									return null;
 								}
@@ -92,7 +92,7 @@ export function CartProvider({ children, initialCart, initialCartId }: CartProvi
 			case "REMOVE":
 				return {
 					...state,
-					lineItems: state.lineItems.filter((item) => item.productVariant.id !== action.variantId),
+					lineItems: state.lineItems.filter((item) => item.productVariant.id !== action.id),
 				};
 
 			case "ADD_ITEM": {
