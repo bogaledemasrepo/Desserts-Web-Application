@@ -44,7 +44,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Suspense fallback={null}>
-          <CartProvider initialCart={null} initialCartId={null}>
+          <CartProvider>
             <div className="flex min-h-screen flex-col">
               <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,7 +64,7 @@ export default function RootLayout({
               <div className="flex-1">{children}</div>
               <Footer />
             </div>
-            <CartSidebar baseUrl={"#"} />
+            <CartSidebar />
           </CartProvider>
         </Suspense>
       </body>
