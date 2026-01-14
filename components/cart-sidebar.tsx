@@ -11,7 +11,7 @@ import { CartItem } from "./cart-item";
 import { useCart } from "@/hooks/cart-context";
 
 export function CartSidebar({ baseUrl }: { baseUrl: string }) {
-	const { isOpen, closeCart, items, itemCount, subtotal, cartId } = useCart();
+	const { isOpen, closeCart, items, itemCount, cartId } = useCart();
 
 	const checkoutUrl = cartId ? `${baseUrl}/api/v1/carts/${cartId}/checkout` : "#";
 

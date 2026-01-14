@@ -1,4 +1,4 @@
-export default [
+const data =  [
   {
     id:"1",
     image: {
@@ -117,3 +117,6 @@ export default [
     price: 6.5,
   },
 ];
+
+
+export default data

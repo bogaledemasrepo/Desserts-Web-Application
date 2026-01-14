@@ -1,6 +1,5 @@
 "use server";
 
-import { cookies } from "next/headers";
 // import { commerce } from "@/lib/commerce";
 
 export async function getCart() {
@@ -18,13 +17,14 @@ export async function getCart() {
 	// }
 }
 
-export async function addToCart(variantId: string, quantity = 1) {
+export async function addToCart(id: string, quantity = 1) {
+	console.log(id,quantity)
 	// const cookieStore = await cookies();
 	// const cartId = cookieStore.get("cartId")?.value;
 
 	// const cart = await commerce.cartUpsert({
 	// 	cartId,
-	// 	variantId,
+	// 	id,
 	// 	quantity,
 	// });
 
@@ -45,7 +45,8 @@ export async function addToCart(variantId: string, quantity = 1) {
 	// return { success: true, cart: fullCart };
 }
 
-export async function removeFromCart(variantId: string) {
+export async function removeFromCart(id: string) {
+	console.log(id)
 	// const cookieStore = await cookies();
 	// const cartId = cookieStore.get("cartId")?.value;
 
@@ -57,7 +58,7 @@ export async function removeFromCart(variantId: string) {
 	// 	// Set quantity to 0 to remove the item
 	// 	await commerce.cartUpsert({
 	// 		cartId,
-	// 		variantId,
+	// 		id,
 	// 		quantity: 0,
 	// 	});
 
@@ -71,7 +72,8 @@ export async function removeFromCart(variantId: string) {
 
 // Set absolute quantity for a cart item
 // Calculates delta internally since cartUpsert uses delta behavior
-export async function setCartQuantity(variantId: string, quantity: number) {
+export async function setCartQuantity(id: string, quantity: number) {
+	console.log(id,quantity)
 	// const cookieStore = await cookies();
 	// const cartId = cookieStore.get("cartId")?.value;
 
@@ -82,17 +84,17 @@ export async function setCartQuantity(variantId: string, quantity: number) {
 	// try {
 	// 	// Get current cart to calculate delta
 	// 	const currentCart = await commerce.cartGet({ cartId });
-	// 	const currentItem = currentCart?.lineItems.find((item) => item.productVariant.id === variantId);
+	// 	const currentItem = currentCart?.lineItems.find((item) => item.productVariant.id === id);
 	// 	const currentQuantity = currentItem?.quantity ?? 0;
 
 	// 	if (quantity <= 0) {
 	// 		// Remove item by setting quantity to 0
-	// 		await commerce.cartUpsert({ cartId, variantId, quantity: 0 });
+	// 		await commerce.cartUpsert({ cartId, id, quantity: 0 });
 	// 	} else {
 	// 		// Calculate delta for cartUpsert
 	// 		const delta = quantity - currentQuantity;
 	// 		if (delta !== 0) {
-	// 			await commerce.cartUpsert({ cartId, variantId, quantity: delta });
+	// 			await commerce.cartUpsert({ cartId, id, quantity: delta });
 	// 		}
 	// 	}
 

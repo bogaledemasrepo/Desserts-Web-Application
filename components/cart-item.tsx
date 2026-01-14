@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { removeFromCart, setCartQuantity } from "@/actions/actions";
 import { CartLineItem, useCart } from "@/hooks/cart-context";
-import { CURRENCY, LOCALE } from "@/lib/constants";
-import { formatMoney } from "@/lib/money";
+
 
 type CartItemProps = {
 	item: CartLineItem;
@@ -23,8 +22,8 @@ export function CartItem({ item }: CartItemProps) {
 	const { product } = productVariant;
 
 	const image = productVariant.images[0] ?? product.images[0];
-	const price = BigInt(productVariant.price);
-	const lineTotal = price * BigInt(quantity);
+	// const price = BigInt(productVariant.price);
+	// const lineTotal = price * BigInt(quantity);
 
 	const handleRemove = () => {
 		startTransition(async () => {

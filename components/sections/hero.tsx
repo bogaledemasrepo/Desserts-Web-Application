@@ -21,7 +21,7 @@ export function Hero() {
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif tracking-tight text-slate-900 leading-[1.1]">
               Artisanal sweets for{" "}
-              <span className="text-pink-600 italic">life's finest</span>{" "}
+              <span className="text-pink-600 italic">life&apos;s finest</span>{" "}
               moments.
             </h1>
 

@@ -31,10 +31,21 @@ export default function CheckoutButton({ products }: CheckoutButtonProps) {
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.log(errorData);
         throw new Error("Failed to create checkout session");
       }
 
-      const { url } = (await response.json()) as any;
+      /** * Defines the expected shape of our API response.
+       * This removes the need for 'as any'.
+       */
+      interface CheckoutResponse {
+        url: string;
+      }
+
+      // ... inside your function ...
+
+      const data = (await response.json()) as CheckoutResponse;
+      const { url } = data;
 
       // Redirect to Stripe Checkout
       if (url) {
@@ -42,9 +53,14 @@ export default function CheckoutButton({ products }: CheckoutButtonProps) {
       } else {
         console.error("No session URL returned from API.");
       }
-    } catch (error: any) {
-      console.error("Error during checkout:", error.message);
-      alert(`Error: ${error.message}`);
+    } catch (error: unknown) {
+      /**
+       * In TypeScript, 'unknown' is safer than 'any'.
+       * We check if it's a real Error object before accessing .message
+       */
+      const message =
+        error instanceof Error ? error.message : "An unexpected error occurred";
+      console.error("CHECKOUT_ERROR:", message);
     } finally {
       setLoading(false);
     }

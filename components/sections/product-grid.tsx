@@ -1,5 +1,4 @@
 // import type { APICollectionGetByIdResult, APIProductsBrowseResult } from "commerce-kit";
-import data from "@/data";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -57,7 +56,7 @@ export async function ProductGrid({
 
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 				{displayProducts.map((product) => {
-					const variants = "variants" in product ? product.variants : null;
+					// const variants = "variants" in product ? product.variants : null;
 						// const prices = variants?.map((v) => BigInt(v.price));
 						// const minPrice = prices
 						// 	? prices.length > 0
