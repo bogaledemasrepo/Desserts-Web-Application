@@ -1,6 +1,5 @@
 "use client";
 import AddSvg from "@/public/assets/images/icon-add-to-cart.svg";
-import React from "react";
 
 const AddToCart = ({ addItemHandler }: { addItemHandler: () => void }) => {
   return (

@@ -9,17 +9,16 @@ import { ApiContext } from "@/hooks/apiContext";
 
 const Item = ({
   name,
-  catagory,
+  category,
   price,
   image,
 }: {
   name: string;
-  catagory: string;
+  category: string;
   price: number;
   image: string;
 }) => {
-  const { isInCartChecker, addItem, maximaiseQuantity, minimaiseQuantity } =
-    useContext(ApiContext);
+
   return (
     <div className="">
       <div className="relative rounded-lg ">
@@ -30,7 +29,10 @@ const Item = ({
           src={image}
           alt={image}
         />
-        {isInCartChecker(name) === 0 ? (
+        <AddToCart addItemHandler={function (): void {
+          throw new Error("Function not implemented.");
+        } } />
+        {/* {isInCartChecker(name) === 0 ? (
           <AddToCart
             addItemHandler={() => {
               addItem(name);
@@ -44,11 +46,11 @@ const Item = ({
             </span>
             <MaxiButton clickHandler={() => maximaiseQuantity(name)} />
           </div>
-        )}
+        )} */}
       </div>
       <div className="pt-8">
         <p className="text-slate-400">{name}</p>
-        <h2 className="text-slate-950 font-bold">{catagory}</h2>
+        <h2 className="text-slate-950 font-bold">{category}</h2>
         <p className="text-myred font-semibold">${price.toFixed(2)}</p>
       </div>
     </div>

@@ -7,8 +7,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 // import { CURRENCY, LOCALE } from "@/lib/constants";
 // import { formatMoney } from "@/lib/money";
-import { useCart } from "@/context/cart-context";
 import { CartItem } from "./cart-item";
+import { useCart } from "@/hooks/cart-context";
 
 export function CartSidebar({ baseUrl }: { baseUrl: string }) {
 	const { isOpen, closeCart, items, itemCount, subtotal, cartId } = useCart();
