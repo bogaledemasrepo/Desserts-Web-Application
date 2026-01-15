@@ -2,15 +2,22 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2025-07-30.basil', // Use a recent stable API version
+  apiVersion: '2025-12-15.clover', // Use a recent stable API version
 });
+interface Item{
+name:string,
+price:number,
+quantity:number
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const { items } = await req.json() as any;
+    const { items } = await req.json() as {
+      items:Item[]
+    };
 
     // Transform your cart items into Stripe line items
-    const line_items = items.map((item: any) => ({
+    const line_items = items.map((item: Item) => ({
       price_data: {
         currency: 'usd',
         product_data: {
@@ -30,8 +37,8 @@ export async function POST(req: NextRequest) {
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
     });
     return NextResponse.json({ url: session.url });
-  } catch (error: any) {
-    console.error('Error creating checkout session:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+   } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "Webhook Error";
+    return new Response(`Webhook Error: ${msg}`, { status: 400 });
   }
 }

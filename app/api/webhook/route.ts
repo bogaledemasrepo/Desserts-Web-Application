@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2025-07-30.basil',
+  apiVersion: '2025-12-15.clover',
 });
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!; // Define this in your .env.local
@@ -16,9 +16,9 @@ export async function POST(req: NextRequest) {
 
   try {
     event = stripe.webhooks.constructEvent(body, signature!, webhookSecret);
-  } catch (err: any) {
-    console.error(`Webhook Error: ${err.message}`);
-    return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "Webhook Error";
+    return NextResponse.json({ error: `Webhook Error: ${msg}` }, { status: 400 });
   }
 
   // Handle the event
