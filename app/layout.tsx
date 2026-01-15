@@ -4,11 +4,12 @@ import "./globals.css";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ShoppingCartIcon } from "lucide-react";
+import { Dessert, ShoppingCartIcon } from "lucide-react";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { CartProvider } from "@/hooks/cart-context";
 import { Navbar } from "@/components/header-component";
 import { CartButton } from "@/components/cart-button";
+import { DessertsProvider } from "@/hooks/desserts-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,12 +39,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Suspense fallback={null}>
+          <DessertsProvider>
           <CartProvider>
             <div className="flex min-h-screen flex-col">
               <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
@@ -66,6 +70,7 @@ export default function RootLayout({
             </div>
             <CartSidebar />
           </CartProvider>
+          </DessertsProvider>
         </Suspense>
       </body>
     </html>

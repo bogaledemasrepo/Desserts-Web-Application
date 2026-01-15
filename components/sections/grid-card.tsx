@@ -7,17 +7,26 @@ import Link from "next/link";
 import { useState } from "react";
 
 function GridCard({product}: {product: {
-  id: string;
-  image: {
-    thumbnail: string;
-    mobile: string;
-    tablet: string;
-    desktop: string;
-  };
-  name: string;
-  description: string;
-  category: string;
-  price: number;
+    id: string;
+    created_at: string;
+    name: string;
+    slug: string;
+    summary: string;
+    description: string;
+    price_cents: number;
+    thumbnail_url: string;
+    images: string[];
+    category_id: string;
+    stock_count: number;
+    nutritional_info: {
+        sugar: string;
+        calories: number;
+        allergens: string[];
+    };
+    is_featured: boolean;
+    categories: {
+        name: string;
+    };
 }}  ) {
           const [isHovered, setIsHovered] = useState(false);
           const {addItem}=useCart();
@@ -26,8 +35,8 @@ function GridCard({product}: {product: {
             addItem({
               id: product.id,
               name: product.name,
-              price: product.price,
-              image: product.image.thumbnail,
+              price: product.price_cents,
+              image: product.thumbnail_url,
             });
           };
           return (
@@ -39,10 +48,10 @@ function GridCard({product}: {product: {
               className="group relative border border-gray-200 rounded-2xl p-4 transition-all duration-300 hover:shadow-lg hover:border-transparent bg-white"
             >
               <div className="relative aspect-square bg-secondary rounded-xl overflow-hidden mb-4">
-                {product.image && (
+                {product.thumbnail_url && (
                   <>
                     <Image
-                      src={product.image.thumbnail}
+                      src={product.thumbnail_url}
                       alt={product.name}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -50,7 +59,7 @@ function GridCard({product}: {product: {
                     />
                     {/* If you have an actual alternate image, swap product.image.thumbnail for it here */}
                     <Image
-                      src={product.image.thumbnail}
+                      src={product.thumbnail_url}
                       alt={`${product.name} - alternate view`}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -86,7 +95,7 @@ function GridCard({product}: {product: {
                   {product.name}
                 </h3>
                 <p className="text-lg font-bold text-slate-900">
-                  ${product.price.toFixed(2)}
+                  ${product.price_cents / 100}
                 </p>
               </div>
             </Link>

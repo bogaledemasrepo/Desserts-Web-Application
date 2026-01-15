@@ -32,17 +32,14 @@ export async function POST(request: Request) {
   const { items, customer_email } = body;
 
   try {
-    console.log("Checkout Request Body:", body);
-
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "No items in the cart" }, { status: 500 });
     }   
     // 2. Fetch with explicit casting from Supabase
     const { data: desserts, error: fetchError } = await supabaseClient
       .from('desserts')
-      .select('id, name, price_cents, thumbnail_url')
-      .in('id', items.map((i: CartItem) => i.id));
-
+      .select('id, name, price_cents, thumbnail_url');
+      //.in('id', items.map((i: CartItem) => i.id));
     if (fetchError || !desserts) {
       throw new Error(fetchError?.message || "Products not found");
     }
@@ -51,8 +48,8 @@ export async function POST(request: Request) {
 
     // 3. Map to Stripe Line Items using official Stripe types
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
-      const dessert = dessertList.find((d) => d.id === item.id);
-      
+    //   const dessert = dessertList.find((d) => d.id === item.id);
+      const dessert = dessertList[0]; // Temporary: always use the first dessert
       if (!dessert) throw new Error(`Dessert with ID ${item.id} not found`);
 
       return {
@@ -67,6 +64,7 @@ export async function POST(request: Request) {
         quantity: item.quantity,
       };
     });
+
 
     // 4. Create Session
     const session = await stripe.checkout.sessions.create({
@@ -83,7 +81,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: session.url });
   } catch (error: unknown) {
-    console.log("Checkout Error:", error);
     const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });
   }

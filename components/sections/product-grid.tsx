@@ -2,20 +2,9 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import GridCard from "./grid-card";
+import { Product } from "@/types";
 
-export type Product = {
-  id: string;
-  image: {
-    thumbnail: string;
-    mobile: string;
-    tablet: string;
-    desktop: string;
-  };
-  name: string;
-  description: string;
-  category: string;
-  price: number;
-};
+
 
 type ProductGridProps = {
   title?: string;

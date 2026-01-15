@@ -1,6 +1,7 @@
-import data from "@/data";
+"use client"
 import { Hero } from "@/components/sections/hero";
 import { ProductGrid } from "@/components/sections/product-grid";
+import { useDesserts } from "@/hooks/desserts-context";
 import { Suspense } from "react";
 
 function ProductGridSkeleton() {
@@ -28,6 +29,9 @@ function ProductGridSkeleton() {
 }
 
 export default function Home() {
+	const { data, isLoading } = useDesserts();
+	console.log("Dessert data:", data, isLoading);
+	
 	return (
 		<main>
 			<Hero />
@@ -37,4 +41,6 @@ export default function Home() {
 		</main>
 	);
 }
+
+
 
