@@ -14,7 +14,7 @@ import React, {
 export interface CartLineItem {
   id: string; // Product/Variant ID
   name: string;
-  price: number;
+  price_cents: number;
   image: string;
   quantity: number;
 }
@@ -30,7 +30,7 @@ interface CartContextValue {
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (product: Omit<CartLineItem, "quantity">) => void;
+  addItem: (product: Omit<CartLineItem, "quantity">, quantity?: number) => void;
   removeItem: (id: string) => void;
   incrementQuantity: (id: string) => void;
   decrementQuantity: (id: string) => void;
@@ -80,12 +80,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
 
-  const addItem = useCallback((product: Omit<CartLineItem, "quantity">) => {
+  const addItem = useCallback((product: Omit<CartLineItem, "quantity">, quantity?: number) => {
     setItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id ? { ...item, quantity: item.quantity + (quantity ?? 1) } : item
         );
       }
       return [...prev, { ...product, quantity: 1 }];
@@ -122,7 +122,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
    */
   const cartValue = useMemo(() => {
     const itemCount = items.reduce((total, item) => total + item.quantity, 0);
-    const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
+    const subtotal = items.reduce((total, item) => total + item.price_cents * item.quantity, 0);
 
     return {
       cart: { items, itemCount, subtotal },

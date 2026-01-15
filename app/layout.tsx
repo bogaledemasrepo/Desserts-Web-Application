@@ -4,7 +4,7 @@ import "./globals.css";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Dessert, ShoppingCartIcon } from "lucide-react";
+import { ShoppingCartIcon } from "lucide-react";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { CartProvider } from "@/hooks/cart-context";
 import { Navbar } from "@/components/header-component";

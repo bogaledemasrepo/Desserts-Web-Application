@@ -1,5 +1,3 @@
-import { summary } from "framer-motion/client";
-
 const data =  [
   {
     id:"1",

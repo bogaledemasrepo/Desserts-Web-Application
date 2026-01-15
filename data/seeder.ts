@@ -18,7 +18,9 @@ async function seed() {
   const { error: delFavError } = await supabaseClient.from('favorites').delete().neq('id', '00000000-0000-0000-0000-000000000000')
   const { error: delDessertError } = await supabaseClient.from('desserts').delete().neq('id', '00000000-0000-0000-0000-000000000000')
   const { error: delCatError } = await supabaseClient.from('categories').delete().neq('id', '00000000-0000-0000-0000-000000000000')
-
+  console.log('Deleted order items error:', delItemsError)
+  console.log('Deleted orders error:', delOrdersError)
+  console.log('Deleted favorites error:', delFavError)
   if (delDessertError || delCatError) {
     console.error('❌ Wipe failed:', delDessertError?.message || delCatError?.message)
     return

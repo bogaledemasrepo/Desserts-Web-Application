@@ -4,8 +4,8 @@ import { AddToCartButton } from "@/app/product/[slug]/add-to-cart-button";
 import { ImageGallery } from "@/app/product/[slug]/image-gallery";
 import { ProductFeatures } from "@/app/product/[slug]/product-features";
 import { Skeleton } from "@/components/ui/skeleton";
-import data from "@/data";
 import { useParams } from "next/navigation";
+import { useDesserts } from "@/hooks/desserts-context";
 
 function ProductDetailsSkeleton() {
 	return (
@@ -28,7 +28,8 @@ function ProductDetailsSkeleton() {
 export default function ProductPage() {
 	
 	const param = useParams() as { slug: string };
-	const product = data[parseInt(param.slug) || 0];
+	const {data} = useDesserts();
+	const product = data.find((item) => item.id === param.slug);
 
 	if (!product) {
 		return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">Product not found.</div>;
@@ -39,7 +40,7 @@ export default function ProductPage() {
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 			<div className="lg:grid lg:grid-cols-2 lg:gap-16">
 				{/* Left: Image Gallery (sticky on desktop) */}
-				<ImageGallery images={[product.image.desktop]} productName={product.name} variants={[]} />
+				{product.thumbnail_url && <ImageGallery images={[product.thumbnail_url]} productName={product.name} variants={[]} />}
 
 				{/* Right: Product Details */}
 				<div className="mt-8 lg:mt-0 space-y-8">
@@ -48,19 +49,14 @@ export default function ProductPage() {
 						<h1 className="text-4xl font-medium tracking-tight text-foreground lg:text-5xl text-balance">
 							{product.name}
 						</h1>
-						<p className="text-2xl font-semibold tracking-tight">$ {product.price.toFixed(2)}</p>
+						<p className="text-2xl font-semibold tracking-tight">$ {product.price_cents.toFixed(2)}</p>
 						{product.description && <p className="text-muted-foreground leading-relaxed">{product.description}</p>}
 					</div>
 
 					{/* Variant Selector, Quantity, Add to Cart, Trust Badges */}
 					<AddToCartButton
 						variants={[]}
-						product={{
-							id: product.id,
-							name: product.name,
-							slug: "product.slug",
-							images: product.image ? [product.image.desktop] : [],
-						}}
+						product={product}
 					/>
 				</div>
 			</div>

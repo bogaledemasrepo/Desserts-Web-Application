@@ -28,7 +28,7 @@ export function CartItem({ item }: CartItemProps) {
   } = useCart();
 
   // Calculate line total locally
-  const lineTotal = item.price * item.quantity;
+  const lineTotal = item.price_cents * item.quantity;
 
   return (
     <div className="group flex gap-4 py-6 transition-all">
@@ -59,7 +59,7 @@ export function CartItem({ item }: CartItemProps) {
               {item.name}
             </Link>
             <p className="text-xs text-slate-500">
-              {formatCurrency(item.price)} each
+              {formatCurrency(item.price_cents)} each
             </p>
           </div>
           
