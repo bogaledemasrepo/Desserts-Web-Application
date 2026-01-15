@@ -1,33 +1,13 @@
 "use client";
 import { useCart } from "@/hooks/cart-context";
+import { Product } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-function GridCard({product}: {product: {
-    id: string;
-    created_at: string;
-    name: string;
-    slug: string;
-    summary: string;
-    description: string;
-    price_cents: number;
-    thumbnail_url: string;
-    images: string[];
-    category_id: string;
-    stock_count: number;
-    nutritional_info: {
-        sugar: string;
-        calories: number;
-        allergens: string[];
-    };
-    is_featured: boolean;
-    categories: {
-        name: string;
-    };
-}}  ) {
+function GridCard({product}: {product: Product}  ) {
           const [isHovered, setIsHovered] = useState(false);
           const {addItem}=useCart();
           const handleAddToCart = (e: React.MouseEvent) => {
@@ -35,7 +15,7 @@ function GridCard({product}: {product: {
             addItem({
               id: product.id,
               name: product.name,
-              price: product.price_cents,
+              price_cents: product.price_cents,
               image: product.thumbnail_url,
             });
           };
