@@ -10,6 +10,7 @@ import { CartProvider } from "@/hooks/cart-context";
 import { Navbar } from "@/components/header-component";
 import { CartButton } from "@/components/cart-button";
 import { DessertsProvider } from "@/hooks/desserts-context";
+import { AuthProvider } from "@/hooks/auth-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,37 +41,40 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Suspense fallback={null}>
-          <DessertsProvider>
-          <CartProvider>
-            <div className="flex min-h-screen flex-col">
-              <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="flex items-center justify-between h-16">
-                    <div className="flex w-full items-center gap-8 justify-between">
-                      <Link href="/" className="text-xl font-bold">
-                        Smart Dessert
-                      </Link>
-                      <Navbar />
-                      <Suspense fallback={<CartButtonFallback />}>
-                        <CartButton />
-                      </Suspense>
+          <AuthProvider>
+            <DessertsProvider>
+              <CartProvider>
+                <div className="flex min-h-screen flex-col">
+                  <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="flex items-center justify-between h-16">
+                        <div className="flex w-full items-center gap-8 justify-between">
+                          <Link href="/" className="text-xl font-bold">
+                            Smart Dessert
+                          </Link>
+                           
+                          <Navbar />
+                          <Suspense fallback={<CartButtonFallback />}>
+                            <CartButton />
+                          </Suspense>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </header>
+                  <div className="flex-1">{children}</div>
+                  <Footer />
                 </div>
-              </header>
-              <div className="flex-1">{children}</div>
-              <Footer />
-            </div>
-            <CartSidebar />
-          </CartProvider>
-          </DessertsProvider>
+                <CartSidebar />
+              </CartProvider>
+            </DessertsProvider>
+          </AuthProvider>
         </Suspense>
       </body>
     </html>

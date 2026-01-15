@@ -29,9 +29,7 @@ function ProductGridSkeleton() {
 }
 
 export default function Home() {
-	const { data, isLoading } = useDesserts();
-	console.log("Dessert data:", data, isLoading);
-	
+	const { data } = useDesserts();
 	return (
 		<main>
 			<Hero />
