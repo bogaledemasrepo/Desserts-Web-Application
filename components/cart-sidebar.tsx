@@ -4,20 +4,17 @@ import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetFooter, 
-  SheetHeader, 
-  SheetTitle 
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle
 } from "@/components/ui/sheet";
 import { CartItem } from "./cart-item";
 import { useCart } from "@/hooks/cart-context";
+import { useState } from "react";
 
-/**
- * Formats numbers into a clean currency string.
- * Since we are client-side, we use Intl.NumberFormat.
- */
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -26,19 +23,44 @@ const formatCurrency = (amount: number) => {
 };
 
 export function CartSidebar() {
-  const { 
-    isOpen, 
-    closeCart, 
-    cart, 
-    clearCart 
+  const {
+    isOpen,
+    closeCart,
+    cart,
+    clearCart
   } = useCart();
 
   const { items, itemCount, subtotal } = cart;
+  const [loading, setLoading] = useState(false);
+
+  const onCheckout = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: items.map(i => ({ id: i.id, quantity: i.quantity })),
+          customer_email: 'user@example.com', // Get this from Supabase Auth
+        }),
+      });
+   
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error("Checkout failed", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && closeCart()}>
       <SheetContent className="flex flex-col w-full sm:max-w-lg p-0 gap-0">
-        
+
         {/* Header Section */}
         <SheetHeader className="px-6 py-4 border-b">
           <div className="flex items-center justify-between">
@@ -65,8 +87,8 @@ export function CartSidebar() {
                 Treat yourself to something delicious!
               </p>
             </div>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={closeCart}
               className="mt-2 rounded-full px-8"
             >
@@ -102,11 +124,12 @@ export function CartSidebar() {
 
                 <div className="flex flex-col gap-3">
                   <Button asChild className="w-full h-14 text-base font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 transition-all shadow-md">
-                    <Link href="/checkout" onClick={closeCart}>
-                      Checkout Now
+                    <Link href={"#"} onClick={onCheckout}>
+                      {loading ? 'Processing...' : 'Checkout Now'}
                     </Link>
                   </Button>
-                  
+                  {/* <Button  onClick={onCheckout} disabled={loading} asChild className="w-full h-14 text-base font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 transition-all shadow-md">{loading ? 'Processing...' : 'Checkout Now'}</Button> */}
+                
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
@@ -119,7 +142,7 @@ export function CartSidebar() {
                     <button
                       type="button"
                       onClick={() => {
-                        if(confirm("Clear all items from your cart?")) clearCart();
+                        if (confirm("Clear all items from your cart?")) clearCart();
                       }}
                       className="flex-1 text-sm font-medium text-red-400 hover:text-red-600 transition-colors py-2"
                     >
