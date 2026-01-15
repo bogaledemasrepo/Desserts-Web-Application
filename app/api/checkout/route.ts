@@ -46,7 +46,8 @@ export async function POST(request: Request) {
     if (fetchError || !desserts) {
       throw new Error(fetchError?.message || "Products not found");
     }
-    const dessertList = desserts as DessertRow[];
+    const dessertList = desserts.map(Item=>({...Item,quantity:items.find(I=>I.id==Item.id)?.quantity||1})) as DessertRow[];
+
 
     // 3. Build Stripe Line Items
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = dessertList.map((dbProduct) => {
@@ -73,8 +74,8 @@ export async function POST(request: Request) {
       line_items,
       mode: 'payment',
       customer_email,
-      success_url: `http://localhost:3000/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:3000/checkout/cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/cancel`,
       metadata: {
         items: JSON.stringify(items),
       },

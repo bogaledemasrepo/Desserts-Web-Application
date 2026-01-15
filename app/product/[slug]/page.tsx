@@ -49,7 +49,7 @@ export default function ProductPage() {
 						<h1 className="text-4xl font-medium tracking-tight text-foreground lg:text-5xl text-balance">
 							{product.name}
 						</h1>
-						<p className="text-2xl font-semibold tracking-tight">$ {product.price_cents.toFixed(2)}</p>
+						<p className="text-2xl font-semibold tracking-tight">$ {(product.price_cents / 100).toFixed(2)}</p>
 						{product.description && <p className="text-muted-foreground leading-relaxed">{product.description}</p>}
 					</div>
 

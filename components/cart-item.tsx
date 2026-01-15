@@ -59,7 +59,7 @@ console.log(item);
               {item.name}
             </Link>
             <p className="text-xs text-slate-500">
-              {formatCurrency(item.price_cents)} each
+              {formatCurrency(item.price_cents / 100)} each
             </p>
           </div>
           
