@@ -20,3 +20,14 @@ export type Product = {
         name: string;
     };
 }
+
+export type Order={
+    id: string;
+    created_at: string;
+    status: string;
+    total_amount_cents: number;
+    items: {
+        name: string;
+        quantity: number;
+    }[];
+}
