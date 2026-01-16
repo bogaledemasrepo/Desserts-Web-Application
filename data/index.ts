@@ -117,3 +117,33 @@ const data =  [
 
 
 export default data
+
+export const MOCK_ORDERS = [
+  {
+    id: "ord_12345",
+    created_at: new Date().toISOString(),
+    status: "completed",
+    total_amount_cents: 4500,
+    items: [{ name: "Chocolate Lava Cake", quantity: 2 }, { name: "Macarons", quantity: 5 }]
+  },
+  {
+    id: "ord_67890",
+    created_at: new Date(Date.now() - 86400000).toISOString(),
+    status: "processing",
+    total_amount_cents: 2200,
+    items: [{ name: "Strawberry Tart", quantity: 1 }]
+  }
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1 }
+};

@@ -57,7 +57,7 @@ export default function RootLayout({
                       <div className="flex items-center justify-between h-16">
                         <div className="flex w-full items-center gap-8 justify-between">
                           <Link href="/" className="text-xl font-bold">
-                            Smart Dessert
+                            Smart D
                           </Link>
                            
                           <Navbar />
