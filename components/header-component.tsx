@@ -32,14 +32,14 @@ export function Navbar() {
 					{collection.name}
 				</Link>
 			))}
-			{user && <Link
+			{!user && <Link
 				href="/login"
 				className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
 			>
 				Login
 			</Link>
 			}
-			{!user && <Button variant={"link"} onClick={handleLogout} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+			{user && <Button variant={"link"} onClick={handleLogout} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
 				Logout
 			</Button>
 			}

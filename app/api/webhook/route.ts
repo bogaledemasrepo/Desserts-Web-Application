@@ -42,3 +42,29 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ received: true }, { status: 200 });
 }
+
+
+// // When creating the session in the checkout route, 
+// // pass the user's ID in the metadata
+// const session = await stripe.checkout.sessions.create({
+//   // ...
+//   metadata: {
+//     userId: user.id, // Get this from your auth check
+//     cartItems: JSON.stringify(items),
+//   },
+// });
+
+// // Then in the Webhook, extract it:
+// if (event.type === 'checkout.session.completed') {
+//   const session = event.data.object as Stripe.Checkout.Session;
+//   const userId = session.metadata?.userId;
+
+//   const { error } = await supabaseAdmin
+//     .from('orders')
+//     .insert({
+//       user_id: userId,
+//       total_amount_cents: session.amount_total,
+//       status: 'completed',
+//       // ...
+//     });
+// }

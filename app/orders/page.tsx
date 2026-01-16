@@ -10,8 +10,6 @@ import Loading from "@/components/loading";
 import NoProducts from "@/components/no-product";
 
 export default function OrdersPage() {
-    // Use your real Supabase data here later
-    // const orders = MOCK_ORDERS;
     const [data, setData] = useState<Order[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 

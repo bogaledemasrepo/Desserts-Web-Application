@@ -29,7 +29,6 @@ export function CartItem({ item }: CartItemProps) {
 
   // Calculate line total locally
   const lineTotal = item.price_cents * item.quantity;
-console.log(item);
   return (
     <div className="group flex gap-4 py-6 transition-all">
       {/* Product Image Wrapper */}

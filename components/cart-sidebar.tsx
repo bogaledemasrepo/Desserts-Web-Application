@@ -14,6 +14,7 @@ import {
 import { CartItem } from "./cart-item";
 import { useCart } from "@/hooks/cart-context";
 import { useState } from "react";
+import { useAuth } from "@/hooks/auth-context";
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-US", {
@@ -29,6 +30,7 @@ export function CartSidebar() {
     cart,
     clearCart
   } = useCart();
+  const {user}=useAuth()
 
   const { items, itemCount, subtotal } = cart;
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,19 @@ export function CartSidebar() {
   const onCheckout = async () => {
     setLoading(true);
     try {
+      //1, Create Oreder
+      const orderResponse = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: items.map(i => ({ id: i.id, quantity: i.quantity })),
+          user_id:user?.id,
+          customer_email: user?.email, // Get this from Supabase Auth
+        }),
+      });
+      console.log(orderResponse)
+      if(!orderResponse.ok) throw new Error("Faild to create Order!")
+      //2. Proced to checkout
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

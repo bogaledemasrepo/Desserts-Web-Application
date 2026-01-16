@@ -100,3 +100,26 @@ CREATE POLICY "Public profiles are viewable by everyone." ON profiles FOR SELECT
 CREATE POLICY "Users can update own profile." ON profiles FOR UPDATE USING (auth.uid() = id);
 CREATE POLICY "Desserts are viewable by everyone." ON desserts FOR SELECT USING (true);
 CREATE POLICY "Users can view their own orders." ON orders FOR SELECT USING (auth.uid() = user_id);
+
+
+-- Add user_id to your orders table if you haven't
+ALTER TABLE orders 
+ADD COLUMN user_id UUID REFERENCES auth.users(id) DEFAULT auth.uid();
+
+
+-- 1. Enable RLS on the table
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+-- 2. Allow users to INSERT their own orders
+-- (Checks if the ID being inserted matches the ID of the logged-in user)
+CREATE POLICY "Users can create their own orders" 
+ON orders FOR INSERT 
+TO authenticated 
+WITH CHECK (auth.uid() = user_id);
+
+-- 3. Allow users to SELECT (Read) only their own orders
+-- (Filters the table so a user only sees rows where user_id matches their own)
+CREATE POLICY "Users can view their own orders" 
+ON orders FOR SELECT 
+TO authenticated 
+USING (auth.uid() = user_id);
