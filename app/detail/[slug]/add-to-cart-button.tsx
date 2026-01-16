@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { QuantitySelector } from "@/app/product/[slug]/quantity-selector";
-import { TrustBadges } from "@/app/product/[slug]/trust-badges";
 import { useCart } from "@/hooks/cart-context";
+import { QuantitySelector } from "./quantity-selector";
+import { TrustBadges } from "./trust-badges";
 
 /** * Type Definitions for Product Variants
  */

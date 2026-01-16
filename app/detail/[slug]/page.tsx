@@ -1,11 +1,11 @@
 "use client"
 import { Suspense } from "react";
-import { AddToCartButton } from "@/app/product/[slug]/add-to-cart-button";
-import { ImageGallery } from "@/app/product/[slug]/image-gallery";
-import { ProductFeatures } from "@/app/product/[slug]/product-features";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import { useDesserts } from "@/hooks/desserts-context";
+import { ImageGallery } from "./image-gallery";
+import { AddToCartButton } from "./add-to-cart-button";
+import { ProductFeatures } from "./product-features";
 
 function ProductDetailsSkeleton() {
 	return (
