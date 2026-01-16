@@ -18,11 +18,11 @@ export function ProductGrid({
   title = "Featured Products",
   description = "Handpicked favorites from our collection",
   products,
-  limit = 6,
+  limit,
   showViewAll = true,
   viewAllHref = "/collections",
 }: ProductGridProps) {
-  const displayProducts = products ? products.slice(0, limit) : [];
+  const displayProducts = products ? products.slice(0, limit??-1) : [];
 
   return (
     <section
