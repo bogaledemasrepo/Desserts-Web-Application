@@ -22,7 +22,7 @@ function GridCard({ product }: { product: Product }) {
   return (
     <Link
       key={product.id}
-      href={`/product/${product.id}`}
+      href={`/detail/${product.id}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="group relative border border-gray-200 rounded-2xl p-4 transition-all duration-300 hover:shadow-lg hover:border-transparent bg-white"
