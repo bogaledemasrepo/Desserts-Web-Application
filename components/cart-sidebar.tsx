@@ -123,9 +123,9 @@ export function CartSidebar() {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <Button asChild className="w-full h-14 text-base font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 transition-all shadow-md">
+                  <Button asChild className="w-full h-12 text-base font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 transition-all shadow-md">
                     <Link href={"#"} onClick={onCheckout}>
-                      {loading ? 'Processing...' : 'Checkout Now'}
+                      {loading ? 'Processing...' : 'Confirm Order'}
                     </Link>
                   </Button>
                   {/* <Button  onClick={onCheckout} disabled={loading} asChild className="w-full h-14 text-base font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 transition-all shadow-md">{loading ? 'Processing...' : 'Checkout Now'}</Button> */}

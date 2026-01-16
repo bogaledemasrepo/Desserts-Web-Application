@@ -20,7 +20,7 @@ export function ProductGrid({
   products,
   limit = 6,
   showViewAll = true,
-  viewAllHref = "/products",
+  viewAllHref = "/collections",
 }: ProductGridProps) {
   const displayProducts = products ? products.slice(0, limit) : [];
 

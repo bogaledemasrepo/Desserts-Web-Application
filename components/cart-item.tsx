@@ -102,7 +102,7 @@ console.log(item);
           {/* Line Total */}
           <div className="text-right">
             <span className="text-sm font-bold text-slate-900">
-              {formatCurrency(lineTotal)}
+              {formatCurrency(lineTotal / 100)}
             </span>
           </div>
         </div>
