@@ -79,7 +79,7 @@ export default function OrdersPage() {
                                     <div className="space-y-2 mb-4">
                                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Items Purchased</p>
                                         <div className="flex flex-wrap gap-1.5">
-                                            {order.items.map((item, idx) => (
+                                            {order.order_items.map((item, idx) => (
                                                 <div key={idx} className="flex items-center bg-slate-50 px-2 py-1 rounded-md border border-slate-100">
                                                     <span className="text-xs font-bold text-red-400 mr-1.5">{item.quantity}x</span>
                                                     <span className="text-xs text-slate-600 truncate max-w-[120px] sm:max-w-none">

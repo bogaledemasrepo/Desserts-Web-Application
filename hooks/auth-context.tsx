@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { User } from '@supabase/supabase-js'
-import supabase from '@/lib/supabase/supabaseClient'
+import {createClient} from '@/lib/supabase/client'
 
 interface AuthContextType {
   user: User | null
@@ -24,6 +24,7 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const supabase = createClient()
 
   useEffect(() => {
     // Get initial session
@@ -44,7 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     )
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [supabase.auth])
+
 
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({

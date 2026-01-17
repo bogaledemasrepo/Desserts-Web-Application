@@ -26,8 +26,25 @@ export type Order={
     created_at: string;
     status: string;
     total_amount_cents: number;
-    items: {
+    order_items: {
         name: string;
         quantity: number;
     }[];
+}
+
+export interface OrderItemInput {
+  id: string;
+  quantity: number;
+}
+
+export interface OrderRequestBody {
+  items: OrderItemInput[];
+  user_id: string;
+  customer_email: string;
+}
+
+export interface DessertRow {
+  id: string;
+  price_cents: number;
+  name: string;
 }
